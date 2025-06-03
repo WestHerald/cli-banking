@@ -20,6 +20,7 @@ public class UserAuthentication {
             this.pin = pin;
         }
 
+        public String getName() { return name;}
         public int getId() { return id; }
         public String getEmail() { return email; }
         public String getNumber() { return number; }
@@ -124,23 +125,43 @@ public class UserAuthentication {
                     currentUserId = auth.login(loginEmail, loginPin);
 
                     if (currentUserId != -1) {
-                        // After successful login
-                        CheckBalance check = new CheckBalance();
+                        // Initialize once for this session
+                        CheckBalance checkBalance = new CheckBalance();
+                        CashIn cashIn = new CashIn(checkBalance);
                         boolean loggedIn = true;
+
                         while (loggedIn) {
                             System.out.println("\nWelcome! What would you like to do?");
-                            System.out.println("1. Check Balance");
-                            System.out.println("2. Logout");
+                            System.out.println("1. Cash In");
+                            System.out.println("2. Check Balance");
+                            System.out.println("3. Logout");
                             System.out.print("Enter option: ");
                             String subOption = scanner.nextLine();
 
                             switch (subOption) {
                                 case "1":
-                                    double balance = check.checkBalance(currentUserId);
-                                    System.out.println("Your balance is: PHP " + balance);
+                                    System.out.print("Enter amount to cash in: ");
+                                    double amount;
+                                    try {
+                                        amount = Double.parseDouble(scanner.nextLine());
+                                        if (amount <= 0) {
+                                            System.out.println("Amount must be greater than zero.");
+                                            break;
+                                        }
+                                    } catch (NumberFormatException e) {
+                                        System.out.println("Invalid amount.");
+                                        break;
+                                    }
+
+                                    cashIn.cashIn(amount, currentUserId, "Cash In");
                                     break;
 
                                 case "2":
+                                    double balance = checkBalance.checkBalance(currentUserId);
+                                    System.out.println("Your balance is: PHP " + balance);
+                                    break;
+
+                                case "3":
                                     auth.logout(currentUserId);
                                     currentUserId = -1;
                                     loggedIn = false;
@@ -152,6 +173,7 @@ public class UserAuthentication {
                         }
                     }
                     break;
+
 
                 case "3":
                     if (currentUserId == -1) {

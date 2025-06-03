@@ -28,13 +28,6 @@ public class CheckBalance {
 
     private ArrayList<Balance> balances = new ArrayList<>();
 
-    // Sample existing user balances
-    public CheckBalance() {
-        balances.add(new Balance(500.0, 1)); // userID 1
-        balances.add(new Balance(1200.0, 2)); // userID 2
-        balances.add(new Balance(100.0, 3)); // userID 3
-    }
-
     // Method to check balance by userId
     public double checkBalance(int userId) {
         for (Balance b : balances) {
@@ -44,6 +37,15 @@ public class CheckBalance {
         }
         System.out.println("Balance not found for user ID: " + userId);
         return 0.0;
+    }
+
+    // Getter for Balance List 
+    public ArrayList<Balance> getBalanceList() {
+        return balances;
+    }
+
+    public void addBalance(double amount, int userId) {
+        balances.add(new Balance(amount, userId));
     }
 
 }
