@@ -35,11 +35,9 @@ public class CheckBalance {
                 return b.getAmount();
             }
         }
-        System.out.println("Balance not found for user ID: " + userId);
         return 0.0;
     }
 
-    // Getter for Balance List 
     public ArrayList<Balance> getBalanceList() {
         return balances;
     }

@@ -4,8 +4,7 @@ import java.util.Date;
 
 public class CashIn {
 
-    static class Transaction {
-        private static int idCounter = 1;
+    public static class Transaction implements TransactionRecord {
         private int id;
         private double amount;
         private String name;
@@ -15,25 +14,41 @@ public class CashIn {
         private Integer transferFromID;
 
         public Transaction(double amount, String name, int accountId, Integer transferToID, Integer transferFromID) {
-            this.id = idCounter++;
+            this.id = Transactions.TransactionIdGenerator.getNextId();
             this.amount = amount;
             this.name = name;
             this.accountId = accountId;
             this.transferToID = transferToID;
-            this.transferFromID = transferFromID;
-            this.date = new Date(); // current date
+            this.transferToID = accountId;
+            this.date = new Date();
         }
 
+        @Override
+        public int getId() {
+            return id;
+        }
+
+        public int getAccountId() {
+            return accountId;
+        }
+
+        @Override
         public String toString() {
-            return String.format("Transaction ID: %d | Amount: %.2f | To User ID: %d | Date: %s",
-                                  id, amount, accountId, date.toString());
+            return String.format(
+                "Transaction ID: %d | Name: %s | Amount: %.2f | From: %s | To: %s | Date: %s",
+                id,
+                name,
+                amount,
+                transferFromID == null ? "External" : transferFromID,
+                transferToID == null ? accountId : transferToID,
+                date.toString()
+            );
         }
     }
 
     // Transaction ArrayList
     private ArrayList<Transaction> transactions = new ArrayList<>();
 
-    // Reference to CheckBalance class
     private CheckBalance checkBalance;
 
     public CashIn(CheckBalance checkBalance) {
@@ -42,7 +57,7 @@ public class CashIn {
 
     // Method to cash in
     public void cashIn(double amount, int userId, String name) {
-        // Find and update the balance
+        // Find and update balance
         boolean found = false;
         for (CheckBalance.Balance b : checkBalance.getBalanceList()) {
             if (b.getUserId() == userId) {
