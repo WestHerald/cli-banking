@@ -1,3 +1,7 @@
+/* 
+ * Lewis Gerald Cerezo De Leon
+ * 2025 CIICC TWSP PRJ NC III B2
+*/
 package GCashApp;
 
 import java.util.ArrayList;
@@ -120,6 +124,9 @@ public class UserAuthentication {
 
         int currentUserId = -1;
 
+        System.out.println("Lewis Gerald Cerezo De Leon");
+        System.out.println("2025 CIICC TWSP PRJ NC III B2");
+
         while (true) {
             System.out.println("\n=== GkashApp Terminal ===");
             System.out.println("1. Register New Account");
@@ -143,7 +150,7 @@ public class UserAuthentication {
                     break;
 
                 case "2":
-                    System.out.println("\n=== Gkash Login ===");
+                    System.out.println("\n=== GkashApp Login ===");
                     System.out.print("Email: ");
                     String loginEmail = scanner.nextLine().toLowerCase();
                     System.out.print("PIN: ");
